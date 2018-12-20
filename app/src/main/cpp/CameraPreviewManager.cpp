@@ -1,5 +1,13 @@
+
 #include <jni.h>
 #include <string>
+
+#include "com_rzm_opengl_camera_camera_manager_CameraPreviewManager.h"
+#include "CameraPreviewController.h"
+#include <android/native_window.h>
+#include <android/native_window_jni.h>
+
+static CameraPreviewController *cameraController = NULL;
 
 /*
  * Class:     com_rzm_opengl_camera_camera_manager_CameraPreviewManager
@@ -8,7 +16,16 @@
  */
 JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewManager_initEGLContext
   (JNIEnv *env, jobject _jobject, jobject surface, jint width, jint height, jint facingId){
-
+        cameraController = new CameraPreviewController();
+        JavaVM *jvm = NULL;
+        env->GetJavaVM(&jvm);
+        jobject obj = env->NewGlobalRef(_jobject);
+        if (surface != NULL && NULL != cameraController) {
+        	ANativeWindow* window = ANativeWindow_fromSurface(env, surface);
+        	if (window != NULL) {
+        		cameraController->initEGLContext(window, jvm, obj, width, height, facingId);
+        	}
+        }
   }
 
 /*
@@ -34,7 +51,10 @@ JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewM
  * Signature: (II)V
  */
 JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewManager_resetRenderSize
-  (JNIEnv *, jobject, jint, jint);
+  (JNIEnv *env, jobject _jobject, jint width, jint height){
+
+
+  }
 
 /*
  * Class:     com_rzm_opengl_camera_camera_manager_CameraPreviewManager

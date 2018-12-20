@@ -4,25 +4,24 @@ cmake_minimum_required(VERSION 3.4.1)
 #设置头文件路径
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/main/cpp/header)
 
-add_library( # Sets the name of the library.
-             reviewer
+#设置c++文件路径变量
+set(CPP_FILE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/main/cpp)
 
-             # Sets the library as a shared library.
+add_library( reviewer
              SHARED
+             ${CPP_FILE_DIR}/CameraPreviewManager.cpp
+             ${CPP_FILE_DIR}/camera_preview/CameraPreviewController.cpp
+             ${CPP_FILE_DIR}/log/Log.cpp
+             ${CPP_FILE_DIR}/message_queue/handler.cpp
+             ${CPP_FILE_DIR}/message_queue/message_queue.cpp
+)
 
-             ${CMAKE_CURRENT_SOURCE_DIR}/src/main/cpp/CameraPreviewManager.cpp )
 
-
-find_library( # Sets the name of the path variable.
-              log-lib
-
-              # Specifies the name of the NDK library that
-              # you want CMake to locate.
+find_library( log-lib
               log )
 
 
-target_link_libraries( # Specifies the target library.
-                       reviewer
+target_link_libraries( reviewer
                        EGL
                        GLESv2
                        android
