@@ -111,7 +111,7 @@ public class CameraPreviewManager implements CameraSurfaceView.CameraPreviewList
 
 	private CameraConfigure mConfigInfo;
 	/** 当底层创建好EGLContext之后，回调回来配置Camera，返回Camera的配置信息，然后在EGLThread线程中回调回来继续做Camera未完的配置以及Preview **/
-	public CameraConfigure configCameraFromNative(int cameraFacingId){
+	public CameraConfigure configCamera(int cameraFacingId){
 		defaultCameraFacingId = cameraFacingId;
 		mConfigInfo = mCamera.configCameraFromNative(cameraFacingId);
 		return mConfigInfo;

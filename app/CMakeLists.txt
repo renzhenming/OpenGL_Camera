@@ -11,6 +11,7 @@ add_library( reviewer
              SHARED
              ${CPP_FILE_DIR}/CameraPreviewManager.cpp
              ${CPP_FILE_DIR}/camera_preview/CameraPreviewController.cpp
+             ${CPP_FILE_DIR}/camera_preview/CameraPreviewRender.cpp
              ${CPP_FILE_DIR}/log/Log.cpp
              ${CPP_FILE_DIR}/message_queue/handler.cpp
              ${CPP_FILE_DIR}/message_queue/message_queue.cpp

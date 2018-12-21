@@ -42,11 +42,30 @@ bool EGL::init(EGLContext sharedContext){
         return false;
     }
 
-    pfneglPresentationTimeANDROID = (PFNEGLPRESENTATIONTIMEANDROID)eglGetProcAddress("eglPresentationTimeANDROID");
-    if (!pfneglPresentationTimeANDROID) {
-    	LOGE("eglPresentationTimeANDROID is not available!");
-    }
+    //pfneglPresentationTimeANDROID = (PFNEGLPRESENTATIONTIMEANDROID)eglGetProcAddress("eglPresentationTimeANDROID");
+    //if (!pfneglPresentationTimeANDROID) {
+    //	LOGE("eglPresentationTimeANDROID is not available!");
+    //}
     return true;
+}
+
+EGLSurface EGL::createWindowSurface(ANativeWindow* window){
+    EGLSurface surface = NULL;
+    EGLint format;
+    if (!eglGetConfigAttrib(display,configure,EGL_NATIVE_VISUAL_ID,&format)){
+        LOGE("eglGetConfigAttrib() returned error %d", eglGetError());
+        release();
+        return surface;
+    }
+    ANativeWindow_setBuffersGeometry(window,0,0,format);
+    if (!(surface = eglCreateWindowSurface(display,configure,window,0))){
+        LOGE("eglCreateWindowSurface() returned error %d", eglGetError());
+    }
+    return surface;
+}
+
+bool EGL::makeCurrent(EGLSurface eglSurface){
+    return eglMakeCurrent(display, eglSurface, eglSurface, context);
 }
 
 //析构方法

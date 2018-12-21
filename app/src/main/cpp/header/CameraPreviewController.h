@@ -10,6 +10,7 @@
 #include "handler.h"
 #include "message_queue.h"
 #include "egl.h"
+#include "CameraPreviewRender.h"
 
 //定义前后摄像头默认id
 #define CAMERA_FACING_BACK										0
@@ -27,6 +28,16 @@ protected:
     int screenWidth;
     int screenHeight;
 
+	//摄像头预览宽高
+	int cameraWidth;
+	int cameraHeight;
+
+	int textureWidth;
+	int textureHeight;
+
+	//摄像头旋转角度
+	int degress;
+
     //摄像头id
     int cameraFacingId;
 
@@ -39,6 +50,12 @@ protected:
 
     //EGL对象
     EGL *egl;
+
+	//预览surface
+	EGLSurface previewSurface;
+
+	//它负责处理:拷贝纹理(copier)、处理纹理(processor)、输出纹理(render) 核心操作
+	CameraPreviewRender* renderer;
 public:
     //构造函数
     CameraPreviewController();
@@ -47,6 +64,8 @@ public:
     //初始化EGL
     void initEGLContext(ANativeWindow* window, JavaVM *jvm, jobject obj, int screenWidth, int screenHeight, int cameraFacingId);
     virtual bool initialize();
+	//配置相机
+	void configCamera();
 };
 
 enum RenderThreadMessage {
