@@ -47,6 +47,17 @@ void CameraPreviewController::processMessage() {
 	}
 }
 
+//开始初始化EGL
+//Fatal signal 5 (SIGTRAP), code 1 in tid xxxx有返回值却不返回
+bool CameraPreviewController::initialize(){
+    LOGI("CameraPreviewController::initialize()");
+
+    egl = new EGL();
+    egl->init();
+    LOGI("egl initialize success");
+    return true;
+}
+
 //析构函数
 CameraPreviewController::~CameraPreviewController(){
 

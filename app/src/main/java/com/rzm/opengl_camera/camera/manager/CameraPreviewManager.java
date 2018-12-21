@@ -19,6 +19,22 @@ public class CameraPreviewManager implements CameraSurfaceView.CameraPreviewList
 	private boolean isStopped = false;
 	private int defaultCameraFacingId = CameraInfo.CAMERA_FACING_FRONT;
 
+	public native void initEGLContext(Surface surface, int width, int height, int cameraFacingId);
+	public native void initWindowSurface(Surface surface);
+	/** 切换摄像头, 底层会在返回来调用configCamera, 之后在启动预览 **/
+	public native void switchCameraFacing();
+	@Override
+	public native void resetRenderSize(int width, int height);
+	public native void destroyWindowSurface();
+	public native void destroyEGLContext();
+	/**
+	 * 当Camera捕捉到了新的一帧图像的时候会调用这个方法,因为更新纹理必须要在EGLThread中,
+	 * 所以配合下updateTexImageFromNative使用
+	 **/
+	@Override
+	public native void notifyFrameAvailable();
+
+
 	public CameraPreviewManager(CameraSurfaceView previewView, CommonCamera1 camera) {
 		isStopped = false;
 		this.mPreviewView = previewView;
@@ -34,8 +50,6 @@ public class CameraPreviewManager implements CameraSurfaceView.CameraPreviewList
 		return -1;
 	}
 
-	/** 切换摄像头, 底层会在返回来调用configCamera, 之后在启动预览 **/
-	public native void switchCameraFacing();
 
 	@Override
 	public void createSurface(Surface surface, int width, int height){
@@ -65,11 +79,7 @@ public class CameraPreviewManager implements CameraSurfaceView.CameraPreviewList
 			e.printStackTrace();
 		}
 	}
-	public native void initEGLContext(Surface surface, int width, int height, int cameraFacingId);
-	public native void initWindowSurface(Surface surface);
 
-	@Override
-	public native void resetRenderSize(int width, int height);
 	
 	@Override
 	public void destroySurface(){
@@ -93,15 +103,7 @@ public class CameraPreviewManager implements CameraSurfaceView.CameraPreviewList
 		isSurfaceExist = false;
 		isStopped = false;
 	}
-	public native void destroyWindowSurface();
-	public native void destroyEGLContext();
 
-	/**
-	 * 当Camera捕捉到了新的一帧图像的时候会调用这个方法,因为更新纹理必须要在EGLThread中,
-	 * 所以配合下updateTexImageFromNative使用
-	 **/
-	@Override
-	public native void notifyFrameAvailable();
 	
 	public void onPermissionDismiss(String tip){
 		Log.i("problem", "onPermissionDismiss : " + tip);

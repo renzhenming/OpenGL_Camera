@@ -14,6 +14,7 @@ add_library( reviewer
              ${CPP_FILE_DIR}/log/Log.cpp
              ${CPP_FILE_DIR}/message_queue/handler.cpp
              ${CPP_FILE_DIR}/message_queue/message_queue.cpp
+             ${CPP_FILE_DIR}/egl/egl.cpp
 )
 
 

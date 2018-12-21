@@ -9,6 +9,7 @@
 #include "Log.h"
 #include "handler.h"
 #include "message_queue.h"
+#include "egl.h"
 
 //定义前后摄像头默认id
 #define CAMERA_FACING_BACK										0
@@ -35,6 +36,9 @@ protected:
 
     static void* threadStartCallback(void *myself);
     void processMessage();
+
+    //EGL对象
+    EGL *egl;
 public:
     //构造函数
     CameraPreviewController();
@@ -42,7 +46,7 @@ public:
 
     //初始化EGL
     void initEGLContext(ANativeWindow* window, JavaVM *jvm, jobject obj, int screenWidth, int screenHeight, int cameraFacingId);
-
+    virtual bool initialize();
 };
 
 enum RenderThreadMessage {
@@ -68,7 +72,7 @@ class CameraPreviewHandler: public Handler {
 			switch (what) {
 			case MSG_EGL_THREAD_CREATE:
 			    LOGI("handleMessage MSG_EGL_THREAD_CREATE");
-				//previewController->initialize();
+				previewController->initialize();
 				break;
 			case MSG_EGL_CREATE_PREVIEW_SURFACE:
 				//previewController->createPreviewSurface();
