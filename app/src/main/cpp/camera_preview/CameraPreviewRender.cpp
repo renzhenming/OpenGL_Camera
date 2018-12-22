@@ -22,6 +22,9 @@ void CameraPreviewRender::init(int degress, bool isVFlip, int textureWidth, int 
 
     textureCoords = new GLfloat[textureCoordsSize];
     this->fillTextureCoords();
+
+    mCopier = new GPUTextureFrameCopier();
+    mCopier->init();
 }
 
 void CameraPreviewRender::fillTextureCoords(){

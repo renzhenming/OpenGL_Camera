@@ -6,6 +6,7 @@
 #define rzm_opengl_camera_manager_camera_preview_CameraPreviewRender
 
 #include <GLES2/gl2.h>
+#include "GPUTextureFrameCopier.h"
 
 class CameraPreviewRender {
 protected:
@@ -19,6 +20,9 @@ protected:
 
     int textureCoordsSize;
     GLfloat* textureCoords;
+
+    //把Camera的纹理拷贝到inputTexId
+    GPUTextureFrameCopier* mCopier;
 
     void fillTextureCoords();
     float flip(float i);
