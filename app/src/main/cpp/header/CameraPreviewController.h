@@ -28,14 +28,14 @@ protected:
     int screenWidth;
     int screenHeight;
 
-	//摄像头预览宽高
+	//设置的摄像头预览界面的宽高
 	int cameraWidth;
 	int cameraHeight;
 
 	int textureWidth;
 	int textureHeight;
 
-	//摄像头旋转角度
+	//摄像头需要旋转的角度，旋转之后才能摆正
 	int degress;
 
     //摄像头id

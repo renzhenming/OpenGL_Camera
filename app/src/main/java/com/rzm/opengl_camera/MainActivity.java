@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         mPreviewManager = new CameraPreviewManager(mSurfaceView,mCamera1) {
             public void onPermissionDismiss(final String tip) {
-                new Handler().post(new Runnable() {
+                new Handler(getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(MainActivity.this, tip, Toast.LENGTH_SHORT).show();

@@ -66,7 +66,10 @@ bool CameraPreviewController::initialize() {
     renderer = new CameraPreviewRender();
     LOGI("CameraPreviewRender initialize success");
 
+    //配置并返回相机参数
     this->configCamera();
+
+    renderer->init(degress,cameraFacingId == CAMERA_FACING_FRONT,textureWidth,textureHeight,cameraWidth,cameraHeight);
     return true;
 }
 
@@ -101,17 +104,19 @@ void CameraPreviewController::configCamera(){
 
             //获取textureView宽度
             jmethodID getWidthMethodId = env->GetMethodID(cameraConfigJClass,"getTextureWidth","()I");
-            cameraWidth = env->CallIntMethod(cameraConfigJClass,getWidthMethodId);
+            cameraWidth = env->CallIntMethod(cameraConfigObject,getWidthMethodId);
 
             //获取高度
             jmethodID getHeightMethodId = env->GetMethodID(cameraConfigJClass,"getTextureHeight","()I");
-            cameraHeight = env->CallIntMethod(cameraConfigJClass,getHeightMethodId);
+            cameraHeight = env->CallIntMethod(cameraConfigObject,getHeightMethodId);
 
             textureWidth = 360;
             textureHeight = 640;
 
             LOGI("camera : {%d, %d}", cameraWidth, cameraHeight);
             LOGI("Texture : {%d, %d}", textureWidth, textureHeight);
+            LOGI("degress %d:", degress);
+            LOGI("cameraFacingId %d: ", cameraFacingId);
         }
     }
 
