@@ -17,7 +17,7 @@ static const char *GPU_FRAME_VERTEX_SHADER = GET_STR(
         void main() {
             yuvTexCoords = vTexCords.xy;
             gl_Position = trans * vPosition;
-        };
+        }
 );
 static const char *GPU_FRAME_FRAGMENT_SHADER = GET_STR(
         //#extension GL_OES_EGL_image_external : require
@@ -26,7 +26,7 @@ static const char *GPU_FRAME_FRAGMENT_SHADER = GET_STR(
         varying vec2 yuvTexCoords;
         void main() {
             gl_FragColor = texture2D(yuvTexSampler, yuvTexCoords);
-        };
+        }
 );
 
 class GPUTextureFrameCopier : public TextureFrameCopier {

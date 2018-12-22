@@ -20,7 +20,7 @@ static const char *NO_FILTER_VERTEX_SHADER = GET_STR(
         void main() {
             yuvTexCoords = (texMatrix * vTexCords).xy;
             gl_Position = trans * vPosition;
-        };
+        }
 );
 static const char *NO_FILTER_FRAGMENT_SHADER = GET_STR(
         varying
@@ -29,7 +29,7 @@ static const char *NO_FILTER_FRAGMENT_SHADER = GET_STR(
         sampler2D yuvTexSampler;
         void main() {
             gl_FragColor = texture2D(yuvTexSampler, yuvTexCoords);
-        };
+        }
 );
 
 class TextureFrameCopier {
