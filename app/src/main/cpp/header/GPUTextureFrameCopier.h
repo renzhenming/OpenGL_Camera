@@ -19,8 +19,12 @@ static const char *GPU_FRAME_VERTEX_SHADER = GET_STR(
             gl_Position = trans * vPosition;
         }
 );
+
+/**
+ *  ERROR: 0:1: 'samplerExternalOES' : requires extension GL_OES_EGL_image_external to be enabled
+ */
 static const char *GPU_FRAME_FRAGMENT_SHADER = GET_STR(
-        //#extension GL_OES_EGL_image_external : require
+        #extension GL_OES_EGL_image_external : require
         precision mediump float;
         uniform samplerExternalOES yuvTexSampler;
         varying vec2 yuvTexCoords;
