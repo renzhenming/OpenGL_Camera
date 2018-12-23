@@ -30,7 +30,25 @@ protected:
     //把outputTexId渲染到View上
     VideoGLSurfaceRender* mRenderer;
 
+    //camera捕捉到的TextureFrame 是SamplerOES格式的
     GPUTextureFrame *mGPUTextureFrame;
+
+    //利用mCopier转换为Sampler2D格式的inputTexId
+    GLuint mInputTexId;
+
+    //利用mProcessor转换为处理过的outputTexId
+    GLuint mOutputTexId;
+
+    //用于旋转的纹理id
+    GLuint mRotateTexId;
+
+    //暂停状态下的保留的那一帧Texture
+    GLuint mPausedTexId;
+    //暂停的时候增加的FilterId 当切换为普通预览的时候需要去掉
+    int mMixFilterId;
+
+    //在copy以及processor中的FBO
+    GLuint FBO;
 
     void fillTextureCoords();
     float flip(float i);
