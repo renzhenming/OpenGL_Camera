@@ -22,12 +22,18 @@ void CameraPreviewRender::init(int degress, bool isVFlip, int textureWidth, int 
     textureCoords = new GLfloat[textureCoordsSize];
     this->fillTextureCoords();
 
+    //把Camera的纹理拷贝到inputTexId
     mCopier = new GPUTextureFrameCopier();
     mCopier->init();
 
+    //把outputTexId渲染到View上
     mRenderer = new VideoGLSurfaceRender();
-    //传入的是固定的宽高，不是设置的预览界面的宽高
+    //textureWidth textureHeight是设置的需要的宽高，
+    // cameraWidth cameraHeight是设置给相机的预览宽高
     mRenderer->init(textureWidth,textureHeight);
+
+    mGPUTextureFrame = new GPUTextureFrame();
+    mGPUTextureFrame->createTexture();
 }
 
 void CameraPreviewRender::fillTextureCoords(){

@@ -6,7 +6,6 @@
 #define OPENGL_CAMERA_TEXTUREFRAMECOPIER_H
 
 #include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
 #include "TextureFrame.h"
 #include "OpenglUtils.h"
 

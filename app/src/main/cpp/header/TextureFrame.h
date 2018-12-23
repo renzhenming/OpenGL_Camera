@@ -5,7 +5,7 @@
 #ifndef OPENGL_CAMERA_TEXTUREFRAME_H
 #define OPENGL_CAMERA_TEXTUREFRAME_H
 #include <GLES2/gl2.h>
-
+#include <GLES2/gl2ext.h>
 class TextureFrame {
 protected:
     bool checkGlError(const char* op);

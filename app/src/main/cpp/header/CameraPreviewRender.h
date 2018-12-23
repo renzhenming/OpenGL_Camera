@@ -8,6 +8,7 @@
 #include <GLES2/gl2.h>
 #include "GPUTextureFrameCopier.h"
 #include <VideoGLSurfaceRender.h>
+#include <GPUTextureFrame.h>
 #include "Log.h"
 
 class CameraPreviewRender {
@@ -28,6 +29,8 @@ protected:
 
     //把outputTexId渲染到View上
     VideoGLSurfaceRender* mRenderer;
+
+    GPUTextureFrame *mGPUTextureFrame;
 
     void fillTextureCoords();
     float flip(float i);
