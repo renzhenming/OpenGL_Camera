@@ -43,6 +43,8 @@ protected:
     //摄像头id
     int cameraFacingId;
 
+	int64_t startTime = -1;
+
     CameraPreviewHandler* handler;
     MessageQueue* queue;
     pthread_t _threadId;
@@ -66,6 +68,8 @@ protected:
 	//配置相机
 	void configCamera();
 	void startCameraPreview();
+	virtual void processVideoFrame(float position);
+	void updateTexImage();
 public:
     //构造函数
     CameraPreviewController();

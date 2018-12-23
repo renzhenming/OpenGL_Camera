@@ -1,4 +1,5 @@
 #include <CameraPreviewRender.h>
+#include <CommonUtils.h>
 #include "CameraPreviewController.h"
 
 
@@ -7,6 +8,8 @@ CameraPreviewController::CameraPreviewController() {
     LOGI("CameraPreviewController instance created");
     cameraFacingId = CAMERA_FACING_FRONT;
     window = NULL;
+    previewSurface = EGL_NO_SURFACE;
+    startTime = -1;
     queue = new MessageQueue("CameraPreviewHandler message queue");
     handler = new CameraPreviewHandler(this, queue);
 }
@@ -108,7 +111,44 @@ void CameraPreviewController::notifyFrameAvailable(){
 }
 
 void CameraPreviewController::renderFrame(){
+    if (egl != NULL && !isInSwitchingCamera) {
+        if (startTime == -1) {
+            startTime = getCurrentTime();
+        }
+        float position = ((float) (getCurrentTime() - startTime)) / 1000.0f;
+        LOGI("CameraPreviewController::renderFrame time:%f",position);
+        this->processVideoFrame(position);
+        if (previewSurface != EGL_NO_SURFACE) {
+            //this->draw();
+        }
+    }
+}
 
+void CameraPreviewController::processVideoFrame(float position){
+    updateTexImage();
+    renderer->processFrame(position);
+}
+
+void CameraPreviewController::updateTexImage(){
+    JNIEnv *env;
+    if (jvm->AttachCurrentThread(&env, NULL) != JNI_OK) {
+        LOGE("CameraPreviewController updateTexImage AttachCurrentThread() failed");
+        return;
+    }
+    if (env == NULL) {
+        LOGI("getJNIEnv failed");
+        return;
+    }
+    jclass jcls = env->GetObjectClass(obj);
+    if (NULL != jcls) {
+        jmethodID updateTexImageCallback = env->GetMethodID(jcls, "updateTexImageFromNative", "()V");
+        if (NULL != updateTexImageCallback) {
+            env->CallVoidMethod(obj, updateTexImageCallback);
+        }
+    }
+    if (jvm->DetachCurrentThread() != JNI_OK) {
+        LOGE("CameraPreviewController updateTexImage DetachCurrentThread() failed");
+    }
 }
 
 

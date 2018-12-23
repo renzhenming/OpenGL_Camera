@@ -99,18 +99,9 @@ public class CommonCamera1 {
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void updateTexImage() {
-		// Log.i(TAG, "updateTexImage...");
 		try {
 			if (null != mCameraSurfaceTexture) {
 				mCameraSurfaceTexture.updateTexImage();
-				
-				//去掉这个没用的调用
-//				float[] mTmpMatrix = new float[16];
-//				mCameraSurfaceTexture.getTransformMatrix(mTmpMatrix);
-//				
-//				if (null != mCallback) {
-//					mCallback.updateTexMatrix(mTmpMatrix);
-//				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -287,9 +278,8 @@ public class CommonCamera1 {
 	private Camera1ManagerCallback mCallback;
 
 	public interface Camera1ManagerCallback {
-		public void onPermissionDismiss(String tip);
-		
-		public void notifyFrameAvailable();
+		void onPermissionDismiss(String tip);
+		void notifyFrameAvailable();
 	}
 
 	public void setCallback(Camera1ManagerCallback callback) {
