@@ -19,6 +19,7 @@ add_library( reviewer
              ${CPP_FILE_DIR}/opengl/TextureFrameCopier.cpp
              ${CPP_FILE_DIR}/opengl/GPUTextureFrameCopier.cpp
              ${CPP_FILE_DIR}/opengl/TextureFrame.cpp
+             ${CPP_FILE_DIR}/opengl/VideoGLSurfaceRender.cpp
 )
 
 

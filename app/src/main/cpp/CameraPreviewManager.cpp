@@ -62,7 +62,9 @@ JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewM
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewManager_destroyWindowSurface
-  (JNIEnv *, jobject);
+  (JNIEnv *env, jobject _jobject){
+
+}
 
 /*
  * Class:     com_rzm_opengl_camera_camera_manager_CameraPreviewManager
@@ -70,7 +72,9 @@ JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewM
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewManager_destroyEGLContext
-  (JNIEnv *, jobject);
+  (JNIEnv *env, jobject _jobject){
+
+}
 
 /*
  * Class:     com_rzm_opengl_camera_camera_manager_CameraPreviewManager
@@ -78,4 +82,6 @@ JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewM
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewManager_notifyFrameAvailable
-  (JNIEnv *, jobject);
+  (JNIEnv *env, jobject _jobject){
+
+}

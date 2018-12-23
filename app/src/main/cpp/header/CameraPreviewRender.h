@@ -7,6 +7,8 @@
 
 #include <GLES2/gl2.h>
 #include "GPUTextureFrameCopier.h"
+#include <VideoGLSurfaceRender.h>
+#include "Log.h"
 
 class CameraPreviewRender {
 protected:
@@ -23,6 +25,9 @@ protected:
 
     //把Camera的纹理拷贝到inputTexId
     GPUTextureFrameCopier* mCopier;
+
+    //把outputTexId渲染到View上
+    VideoGLSurfaceRender* mRenderer;
 
     void fillTextureCoords();
     float flip(float i);

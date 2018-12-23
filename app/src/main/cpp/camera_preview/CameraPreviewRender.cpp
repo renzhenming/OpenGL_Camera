@@ -4,8 +4,7 @@
 
 #include <CameraPreviewRender.h>
 #include <cstring>
-#include "Log.h"
-#include "CameraPreviewRender.h"
+
 
 CameraPreviewRender::CameraPreviewRender(){
     textureCoordsSize = 8;
@@ -25,6 +24,10 @@ void CameraPreviewRender::init(int degress, bool isVFlip, int textureWidth, int 
 
     mCopier = new GPUTextureFrameCopier();
     mCopier->init();
+
+    mRenderer = new VideoGLSurfaceRender();
+    //传入的是固定的宽高，不是设置的预览界面的宽高
+    mRenderer->init(textureWidth,textureHeight);
 }
 
 void CameraPreviewRender::fillTextureCoords(){
