@@ -24,6 +24,8 @@ class CameraPreviewController {
 protected:
     ANativeWindow* window;
     JavaVM *jvm;
+
+    //CameraPreviewManager.java 的对象
     jobject obj;
     int screenWidth;
     int screenHeight;
@@ -45,27 +47,39 @@ protected:
     MessageQueue* queue;
     pthread_t _threadId;
 
-    static void* threadStartCallback(void *myself);
-    void processMessage();
+    bool isInSwitchingCamera;
 
     //EGL对象
     EGL *egl;
 
-	//预览surface
-	EGLSurface previewSurface;
+    //预览surface
+    EGLSurface previewSurface;
 
-	//它负责处理:拷贝纹理(copier)、处理纹理(processor)、输出纹理(render) 核心操作
-	CameraPreviewRender* renderer;
+    //它负责处理:拷贝纹理(copier)、处理纹理(processor)、输出纹理(render) 核心操作
+    CameraPreviewRender* renderer;
+
+    static void* threadStartCallback(void *myself);
+    void processMessage();
+
+
+protected:
+	//配置相机
+	void configCamera();
+	void startCameraPreview();
 public:
     //构造函数
     CameraPreviewController();
     virtual ~CameraPreviewController();
 
-    //初始化EGL
+    /** 1:准备EGL Context与EGLThread **/
     void initEGLContext(ANativeWindow* window, JavaVM *jvm, jobject obj, int screenWidth, int screenHeight, int cameraFacingId);
+
+    /** 2:当Camera捕捉到新的一帧图像会调用 **/
+    void notifyFrameAvailable();
+
     virtual bool initialize();
-	//配置相机
-	void configCamera();
+
+    void renderFrame();
 };
 
 enum RenderThreadMessage {
@@ -90,9 +104,13 @@ class CameraPreviewHandler: public Handler {
 			int what = msg->getWhat();
 			switch (what) {
 			case MSG_EGL_THREAD_CREATE:
-			    LOGI("handleMessage MSG_EGL_THREAD_CREATE");
+                LOGI("handleMessage MSG_EGL_THREAD_CREATE");
 				previewController->initialize();
 				break;
+			case MSG_RENDER_FRAME:
+                LOGI("handleMessage MSG_RENDER_FRAME");
+                previewController->renderFrame();
+                break;
 			case MSG_EGL_CREATE_PREVIEW_SURFACE:
 				//previewController->createPreviewSurface();
 				break;
@@ -105,9 +123,7 @@ class CameraPreviewHandler: public Handler {
 			case MSG_EGL_THREAD_EXIT:
 				//previewController->destroy();
 				break;
-			case MSG_RENDER_FRAME:
-				//previewController->renderFrame();
-				break;
+
 			}
 		}
 	};

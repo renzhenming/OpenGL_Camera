@@ -56,6 +56,7 @@ public:
     CameraPreviewRender();
     virtual ~CameraPreviewRender();
     void init(int degress, bool isVFlip, int textureWidth, int textureHeight, int cameraWidth, int cameraHeight);
+    int getCameraTextureId();
 };
 
 

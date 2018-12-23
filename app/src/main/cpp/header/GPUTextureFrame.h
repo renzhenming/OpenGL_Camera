@@ -20,6 +20,10 @@ public:
     bool bindTexture(GLint* uniformSamplers);
     void updateTexImage();
     void dealloc();
+
+    GLuint getDecodeTexId() {
+        return mTextureId;
+    };
 };
 
 #endif //OPENGLCAMERA_GPUTEXTUREFRAME_H

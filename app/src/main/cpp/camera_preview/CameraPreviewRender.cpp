@@ -126,6 +126,14 @@ float CameraPreviewRender::flip(float i){
     return 0.0f;
 }
 
+
+int CameraPreviewRender::getCameraTextureId(){
+    if (mGPUTextureFrame) {
+        return mGPUTextureFrame->getDecodeTexId();
+    }
+    return -1;
+}
+
 CameraPreviewRender::~CameraPreviewRender(){
 
 }

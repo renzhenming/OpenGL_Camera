@@ -83,5 +83,7 @@ JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewM
  */
 JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewManager_notifyFrameAvailable
   (JNIEnv *env, jobject _jobject){
-
+    if(cameraController != NULL) {
+        cameraController->notifyFrameAvailable();
+    }
 }

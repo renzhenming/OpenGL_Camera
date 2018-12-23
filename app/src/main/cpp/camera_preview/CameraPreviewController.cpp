@@ -70,8 +70,47 @@ bool CameraPreviewController::initialize() {
     this->configCamera();
 
     renderer->init(degress,cameraFacingId == CAMERA_FACING_FRONT,textureWidth,textureHeight,cameraWidth,cameraHeight);
+
+    this->startCameraPreview();
+
+    isInSwitchingCamera = false;
     return true;
 }
+
+void CameraPreviewController::startCameraPreview() {
+
+    JNIEnv *env;
+    if(jvm->AttachCurrentThread(&env,NULL) != JNI_OK){
+        LOGE("CameraPreviewController AttachCurrentThread() failed");
+        return;
+    }
+    if(env == NULL){
+        LOGE("get JNIEnv failed");
+        return;
+    }
+    jclass jclazz = env->GetObjectClass(obj);
+    if(jclazz != NULL){
+        jmethodID  startPreviewMethodId = env->GetMethodID(jclazz,"startPreviewFromNative","(I)V");
+        if(startPreviewMethodId != NULL){
+            env->CallVoidMethod(obj,startPreviewMethodId,renderer->getCameraTextureId());
+        }
+    }
+    if(jvm->DetachCurrentThread() != JNI_OK){
+        LOGE("CameraPreviewController DetachCurrentThread failed");
+        return;
+    }
+    LOGI("CameraPreviewController::startCameraPreview success");
+}
+
+void CameraPreviewController::notifyFrameAvailable(){
+    if (handler && !isInSwitchingCamera)
+        handler->postMessage(new Message(MSG_RENDER_FRAME));
+}
+
+void CameraPreviewController::renderFrame(){
+
+}
+
 
 //配置相机
 void CameraPreviewController::configCamera(){
