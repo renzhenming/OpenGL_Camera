@@ -68,6 +68,10 @@ bool EGL::makeCurrent(EGLSurface eglSurface){
     return eglMakeCurrent(display, eglSurface, eglSurface, context);
 }
 
+bool EGL::swapBuffers(EGLSurface eglSurface){
+    return eglSwapBuffers(display, eglSurface);
+}
+
 //析构方法
 EGL::~EGL(){
 

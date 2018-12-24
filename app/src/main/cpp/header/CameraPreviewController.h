@@ -70,6 +70,7 @@ protected:
 	void startCameraPreview();
 	virtual void processVideoFrame(float position);
 	void updateTexImage();
+	void draw();
 public:
     //构造函数
     CameraPreviewController();

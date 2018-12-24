@@ -127,7 +127,35 @@ float CameraPreviewRender::flip(float i){
 }
 
 void CameraPreviewRender::processFrame(float position){
-    LOGI("CameraPreviewRender::processFrame");
+    LOGI("CameraPreviewRender::processFrame start");
+    glBindFramebuffer(GL_FRAMEBUFFER,FBO);
+    checkGlError("glBindFramebuffer FBO");
+    if(degress == 90 || degress == 270){
+        glViewport(0,0,cameraHeight,cameraWidth);
+    }else{
+        glViewport(0,0,cameraWidth,cameraHeight);
+    }
+    GLfloat* vertexCoords = this->getVertexCoords();
+    mCopier->renderWithCoords(mGPUTextureFrame,mRotateTexId,vertexCoords,textureCoords);
+
+    int rotateWidth = cameraWidth;
+    int rotateHeight = cameraHeight;
+
+    if(degress == 90 || degress == 270){
+        rotateWidth = cameraHeight;
+        rotateHeight = cameraWidth;
+    }
+    mRenderer->renderToAutoFitTexture(mRotateTexId,rotateWidth,rotateHeight,mInputTexId);
+    glBindFramebuffer(GL_FRAMEBUFFER,0);
+    LOGI("CameraPreviewRender::processFrame success");
+}
+
+void CameraPreviewRender::drawToViewWithAutofit(int videoWidth, int videoHeight, int texWidth, int texHeight){
+    mRenderer->renderToViewWithAutofit(mInputTexId, videoWidth, videoHeight, texWidth, texHeight);
+}
+
+GLfloat* CameraPreviewRender::getVertexCoords(){
+    return CAMERA_TRIANGLE_VERTICES;
 }
 
 

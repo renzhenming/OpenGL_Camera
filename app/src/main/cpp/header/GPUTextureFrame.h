@@ -8,7 +8,7 @@
 #include <GLES2/gl2.h>
 #include "TextureFrame.h"
 
-class GPUTextureFrame :TextureFrame{
+class GPUTextureFrame :public TextureFrame{
 private:
     GLuint mTextureId;
     int initTexture();

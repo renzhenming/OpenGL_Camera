@@ -16,7 +16,7 @@ public:
     bool init(EGLContext sharedContext);
     EGLSurface createWindowSurface(ANativeWindow* window);
     bool makeCurrent(EGLSurface eglSurface);
-
+    bool swapBuffers(EGLSurface eglSurface);
     void release();
     virtual ~EGL();
 };

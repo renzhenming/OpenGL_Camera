@@ -119,8 +119,16 @@ void CameraPreviewController::renderFrame(){
         LOGI("CameraPreviewController::renderFrame time:%f",position);
         this->processVideoFrame(position);
         if (previewSurface != EGL_NO_SURFACE) {
-            //this->draw();
+            this->draw();
         }
+    }
+}
+
+void CameraPreviewController::draw(){
+    egl->makeCurrent(previewSurface);
+    renderer->drawToViewWithAutofit(screenWidth, screenHeight, textureWidth, textureHeight);
+    if (!egl->swapBuffers(previewSurface)) {
+        LOGE("eglSwapBuffers(previewSurface) returned error %d", eglGetError());
     }
 }
 

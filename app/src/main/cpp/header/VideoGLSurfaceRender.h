@@ -45,6 +45,10 @@ public:
     VideoGLSurfaceRender();
     virtual ~VideoGLSurfaceRender();
     bool init(int width, int height);
+    void renderToAutoFitTexture(GLuint inputTexId, int width, int height, GLuint outputTexId);
+    void renderToViewWithAutofit(GLuint texID, int screenWidth, int screenHeight, int texWidth, int texHeight);
+    float calcCropRatio(int screenWidth, int screenHeight, int texWidth, int texHeight);
+
 };
 
 #endif //OPENGLCAMERA_VIDEOGLSURFACERENDER_H

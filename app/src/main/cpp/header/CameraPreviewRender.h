@@ -52,12 +52,14 @@ protected:
 
     void fillTextureCoords();
     float flip(float i);
+    GLfloat* getVertexCoords();
 public:
     CameraPreviewRender();
     virtual ~CameraPreviewRender();
     void init(int degress, bool isVFlip, int textureWidth, int textureHeight, int cameraWidth, int cameraHeight);
     int getCameraTextureId();
     void processFrame(float position);
+    void drawToViewWithAutofit(int videoWidth, int videoHeight, int texWidth, int texHeight);
 };
 
 

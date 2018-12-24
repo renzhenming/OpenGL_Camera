@@ -21,6 +21,7 @@ add_library( reviewer
              ${CPP_FILE_DIR}/opengl/TextureFrame.cpp
              ${CPP_FILE_DIR}/opengl/VideoGLSurfaceRender.cpp
              ${CPP_FILE_DIR}/opengl/GPUTextureFrame.cpp
+             ${CPP_FILE_DIR}/matrix/matrix.cpp
 )
 
 
