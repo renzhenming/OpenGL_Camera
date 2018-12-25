@@ -71,6 +71,7 @@ protected:
 	virtual void processVideoFrame(float position);
 	void updateTexImage();
 	void draw();
+    void releaseCamera();
 public:
     //构造函数
     CameraPreviewController();
@@ -82,9 +83,14 @@ public:
     /** 2:当Camera捕捉到新的一帧图像会调用 **/
     void notifyFrameAvailable();
 
+    /** 4:切换摄像头转向 **/
+    void switchCameraFacing();
+
     virtual bool initialize();
 
     void renderFrame();
+
+    void switchCamera();
 };
 
 enum RenderThreadMessage {
@@ -120,7 +126,8 @@ class CameraPreviewHandler: public Handler {
 				//previewController->createPreviewSurface();
 				break;
 			case MSG_SWITCH_CAMERA_FACING:
-				//previewController->switchCamera();
+                LOGI("handleMessage MSG_SWITCH_CAMERA_FACING");
+				previewController->switchCamera();
 				break;
 			case MSG_EGL_DESTROY_PREVIEW_SURFACE:
 				//previewController->destroyPreviewSurface();

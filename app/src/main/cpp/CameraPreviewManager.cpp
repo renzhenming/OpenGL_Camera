@@ -34,7 +34,11 @@ JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewM
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewManager_switchCameraFacing
-  (JNIEnv *, jobject);
+        (JNIEnv * env, jobject obj) {
+    if(NULL != cameraController) {
+        cameraController->switchCameraFacing();
+    }
+}
 
 
 /*

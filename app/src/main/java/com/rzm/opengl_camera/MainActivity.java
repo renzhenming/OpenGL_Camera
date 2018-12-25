@@ -55,6 +55,6 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void change(View view) {
-
+        mPreviewManager.switchCameraFacing();
     }
 }

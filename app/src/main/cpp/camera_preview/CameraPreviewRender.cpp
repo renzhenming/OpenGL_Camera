@@ -172,6 +172,12 @@ int CameraPreviewRender::getCameraTextureId(){
     return -1;
 }
 
+void CameraPreviewRender::setDegress(int degress, bool isVFlip){
+    this->degress = degress;
+    this->isVFlip = isVFlip;
+    this->fillTextureCoords();
+}
+
 CameraPreviewRender::~CameraPreviewRender(){
 
 }

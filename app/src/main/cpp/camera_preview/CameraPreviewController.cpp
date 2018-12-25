@@ -215,6 +215,54 @@ void CameraPreviewController::configCamera(){
     LOGI("configCamera success");
 }
 
+/** 4:切换摄像头转向 **/
+void CameraPreviewController::switchCameraFacing(){
+    LOGI("CameraPreviewController::switchCameraFacing");
+    isInSwitchingCamera = true;
+    /*notify render thread that camera has changed*/
+    if(cameraFacingId == CAMERA_FACING_BACK){
+        cameraFacingId = CAMERA_FACING_FRONT;
+    } else{
+        cameraFacingId = CAMERA_FACING_BACK;
+    }
+    if (handler)
+        handler->postMessage(new Message(MSG_SWITCH_CAMERA_FACING));
+}
+
+void CameraPreviewController::switchCamera(){
+    this->releaseCamera();
+    this->configCamera();
+    renderer->setDegress(degress, cameraFacingId == CAMERA_FACING_FRONT);
+    this->startCameraPreview();
+    isInSwitchingCamera = false;
+    LOGI("CameraPreviewController::switchCamera success");
+}
+
+void CameraPreviewController::releaseCamera(){
+    LOGI("CameraPreviewController::releaseCamera");
+    JNIEnv *env;
+    if (jvm->AttachCurrentThread(&env, NULL) != JNI_OK) {
+        LOGE("%s: AttachCurrentThread() failed", __FUNCTION__);
+        return;
+    }
+    if (env == NULL) {
+        LOGI("getJNIEnv failed");
+        return;
+    }
+    jclass jcls = env->GetObjectClass(obj);
+    if (NULL != jcls) {
+        jmethodID releaseCameraCallback = env->GetMethodID(jcls, "releaseCameraFromNative", "()V");
+        if (NULL != releaseCameraCallback) {
+            env->CallVoidMethod(obj, releaseCameraCallback);
+        }
+    }
+    if (jvm->DetachCurrentThread() != JNI_OK) {
+        LOGE("%s: DetachCurrentThread() failed", __FUNCTION__);
+        return;
+    }
+}
+
+
 //析构函数
 CameraPreviewController::~CameraPreviewController() {
 
