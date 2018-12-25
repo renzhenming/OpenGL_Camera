@@ -43,6 +43,7 @@ void CameraPreviewRender::init(int degress, bool isVFlip, int textureWidth, int 
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
     GLint format = GL_RGBA;
+    //这个纹理，只分配内存，而不去填充它。纹理填充会在渲染到帧缓冲的时候去做
     glTexImage2D(GL_TEXTURE_2D,0,format,(GLsizei)textureWidth,(GLsizei)textureHeight,0,format,GL_UNSIGNED_BYTE,0);
     //相当于解绑
     glBindTexture(GL_TEXTURE_2D,0);
@@ -57,6 +58,7 @@ void CameraPreviewRender::init(int degress, bool isVFlip, int textureWidth, int 
     glTexImage2D(GL_TEXTURE_2D,0,format,(GLsizei)textureWidth,(GLsizei)textureHeight,0,format,GL_UNSIGNED_BYTE,0);
     glBindTexture(GL_TEXTURE_2D,0);
 
+    //创建一个缓存对象
     glGenFramebuffers(1,&FBO);
     checkGlError("glGenFramebuffers");
 
@@ -126,8 +128,11 @@ float CameraPreviewRender::flip(float i){
     return 0.0f;
 }
 
+//glBindFramebuffer离屏渲染
 void CameraPreviewRender::processFrame(float position){
     LOGI("CameraPreviewRender::processFrame start");
+    //绑定创建的缓存对象FBO（FrameBufferObject），绑定一个帧缓存对象后，
+    // 所有对OpenGL的操作都会针对这个帧缓存对象执行
     glBindFramebuffer(GL_FRAMEBUFFER,FBO);
     checkGlError("glBindFramebuffer FBO");
     if(degress == 90 || degress == 270){
@@ -146,6 +151,7 @@ void CameraPreviewRender::processFrame(float position){
         rotateHeight = cameraWidth;
     }
     mRenderer->renderToAutoFitTexture(mRotateTexId,rotateWidth,rotateHeight,mInputTexId);
+    //为了让所有的渲染操作对主窗口产生影响我们必须通过绑定为0来使默认帧缓冲被激活
     glBindFramebuffer(GL_FRAMEBUFFER,0);
     LOGI("CameraPreviewRender::processFrame success");
 }

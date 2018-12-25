@@ -45,8 +45,17 @@ void GPUTextureFrameCopier::renderWithCoords(TextureFrame *textureFrame, GLuint 
                                              GLfloat *vertexCoords,
                                              GLfloat *textureCoords) {
     LOGI("GPUTextureFrameCopier::renderWithCoords");
+
+    //创建一个帧缓冲的纹理和创建普通纹理差不多
     glBindTexture(GL_TEXTURE_2D, texId);
     checkGlError("GPUTextureFrameCopier glBindTexture");
+    //把纹理texId附加到帧缓冲上
+    //参数解析：target：创建的帧缓冲类型的目标（绘制、读取或两者都有，GL_READ_FRAMEBUFFER GL_DRAW_FRAMEBUFFER GL_FRAME_BUFFER）
+    //        attachment：附加的附件的类型。现在附加的是一个颜色附件。需要注意，最后的那个0是暗示可以附加1个以上颜色的附件
+    //                    (GL_DEPTH_ATTACHMENT GL_STENCIL_ATTACHMENT GL_DEPTH_STENCIL_ATTACHMENT)
+    //        textarget：附加的纹理类型。
+    //        texture：附加的实际纹理。
+    //        level：Mipmap level。设置为0。
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId, 0);
     checkGlError("glFramebufferTexture2D");
     glUseProgram(mProgramId);
