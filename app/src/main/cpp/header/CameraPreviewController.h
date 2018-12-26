@@ -137,6 +137,7 @@ class CameraPreviewHandler: public Handler {
                 previewController->renderFrame();
                 break;
 			case MSG_EGL_CREATE_PREVIEW_SURFACE:
+				LOGI("handleMessage MSG_EGL_CREATE_PREVIEW_SURFACE");
 				previewController->createPreviewSurface();
 				break;
 			case MSG_SWITCH_CAMERA_FACING:
@@ -144,9 +145,11 @@ class CameraPreviewHandler: public Handler {
 				previewController->switchCamera();
 				break;
 			case MSG_EGL_DESTROY_PREVIEW_SURFACE:
+				LOGI("handleMessage MSG_EGL_DESTROY_PREVIEW_SURFACE");
 				previewController->destroyPreviewSurface();
 				break;
 			case MSG_EGL_THREAD_EXIT:
+				LOGI("handleMessage MSG_EGL_THREAD_EXIT");
 				previewController->destroy();
 				break;
 
