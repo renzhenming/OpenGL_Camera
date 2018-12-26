@@ -326,6 +326,26 @@ void CameraPreviewController::deleteGlobalRef() {
     }
 }
 
+void CameraPreviewController::createWindowSurface(ANativeWindow* window) {
+    LOGI("CameraPreviewController::createWindowSurface");
+    if(this->window == NULL){
+        this->window = window;
+        if (handler)
+            handler->postMessage(new Message(MSG_EGL_CREATE_PREVIEW_SURFACE));
+    }
+}
+
+void CameraPreviewController::destroyWindowSurface() {
+    LOGI("CameraPreviewController::destroyWindowSurface");
+    if (handler)
+        handler->postMessage(new Message(MSG_EGL_DESTROY_PREVIEW_SURFACE));
+}
+
+void CameraPreviewController::createPreviewSurface() {
+    previewSurface = egl->createWindowSurface(window);
+    egl->makeCurrent(previewSurface);
+}
+
 //析构函数
 CameraPreviewController::~CameraPreviewController() {
 

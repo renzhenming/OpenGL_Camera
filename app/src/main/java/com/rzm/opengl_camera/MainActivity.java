@@ -57,4 +57,12 @@ public class MainActivity extends AppCompatActivity {
     public void change(View view) {
         mPreviewManager.switchCameraFacing();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPreviewManager.destroyEGLContext();
+        mPreviewManager.destroySurface();
+        mPreviewManager.destroyWindowSurface();
+    }
 }

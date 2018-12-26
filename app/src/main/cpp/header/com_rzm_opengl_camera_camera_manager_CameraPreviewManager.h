@@ -33,6 +33,14 @@ JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewM
 
 /*
  * Class:     com_rzm_opengl_camera_camera_manager_CameraPreviewManager
+ * Method:    createWindowSurface
+ * Signature: (Landroid/view/Surface;)V
+ */
+JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewManager_createWindowSurface
+  (JNIEnv *, jobject, jobject);
+
+/*
+ * Class:     com_rzm_opengl_camera_camera_manager_CameraPreviewManager
  * Method:    resetRenderSize
  * Signature: (II)V
  */

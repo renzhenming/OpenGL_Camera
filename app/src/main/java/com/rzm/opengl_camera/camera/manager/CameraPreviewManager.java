@@ -21,6 +21,7 @@ public class CameraPreviewManager implements CameraSurfaceView.CameraPreviewList
 
 	public native void initEGLContext(Surface surface, int width, int height, int cameraFacingId);
 	public native void initWindowSurface(Surface surface);
+	public native void createWindowSurface(Surface surface);
 	/** 切换摄像头, 底层会在返回来调用configCamera, 之后在启动预览 **/
 	public native void switchCameraFacing();
 	@Override

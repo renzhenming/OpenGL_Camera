@@ -98,7 +98,10 @@ public:
 
 	void destroyPreviewSurface();
 
+    void createWindowSurface(ANativeWindow* window);
     void destroyWindowSurface();
+
+    void createPreviewSurface();
 };
 
 enum RenderThreadMessage {
@@ -131,14 +134,14 @@ class CameraPreviewHandler: public Handler {
                 previewController->renderFrame();
                 break;
 			case MSG_EGL_CREATE_PREVIEW_SURFACE:
-				//previewController->createPreviewSurface();
+				previewController->createPreviewSurface();
 				break;
 			case MSG_SWITCH_CAMERA_FACING:
                 LOGI("handleMessage MSG_SWITCH_CAMERA_FACING");
 				previewController->switchCamera();
 				break;
 			case MSG_EGL_DESTROY_PREVIEW_SURFACE:
-				//previewController->destroyPreviewSurface();
+				previewController->destroyPreviewSurface();
 				break;
 			case MSG_EGL_THREAD_EXIT:
 				previewController->destroy();
