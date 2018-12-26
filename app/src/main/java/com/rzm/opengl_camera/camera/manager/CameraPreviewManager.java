@@ -24,7 +24,6 @@ public class CameraPreviewManager implements CameraSurfaceView.CameraPreviewList
 	public native void createWindowSurface(Surface surface);
 	/** 切换摄像头, 底层会在返回来调用configCamera, 之后在启动预览 **/
 	public native void switchCameraFacing();
-	@Override
 	public native void resetRenderSize(int width, int height);
 	public native void destroyWindowSurface();
 	public native void destroyEGLContext();
@@ -32,7 +31,6 @@ public class CameraPreviewManager implements CameraSurfaceView.CameraPreviewList
 	 * 当Camera捕捉到了新的一帧图像的时候会调用这个方法,因为更新纹理必须要在EGLThread中,
 	 * 所以配合下updateTexImageFromNative使用
 	 **/
-	@Override
 	public native void notifyFrameAvailable();
 
 

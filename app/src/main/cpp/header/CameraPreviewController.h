@@ -102,6 +102,9 @@ public:
     void destroyWindowSurface();
 
     void createPreviewSurface();
+
+	/** 重置绘制区域大小 **/
+	void resetRenderSize(int screenWidth, int screenHeight);
 };
 
 enum RenderThreadMessage {

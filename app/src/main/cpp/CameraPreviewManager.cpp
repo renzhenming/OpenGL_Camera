@@ -55,10 +55,11 @@ JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewM
  * Signature: (II)V
  */
 JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewManager_resetRenderSize
-  (JNIEnv *env, jobject _jobject, jint width, jint height){
-
-
-  }
+        (JNIEnv * env, jobject obj, jint screenWidth, jint screenHeight) {
+    if(NULL != cameraController) {
+        cameraController->resetRenderSize(screenWidth, screenHeight);
+    }
+}
 
 /*
 * Class:     com_rzm_opengl_camera_camera_manager_CameraPreviewManager

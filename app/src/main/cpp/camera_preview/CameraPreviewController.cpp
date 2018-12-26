@@ -346,6 +346,12 @@ void CameraPreviewController::createPreviewSurface() {
     egl->makeCurrent(previewSurface);
 }
 
+void CameraPreviewController::resetRenderSize(int screenWidth, int screenHeight){
+    LOGI("CameraPreviewController::resetSize screenWidth:%d; screenHeight:%d", screenWidth, screenHeight);
+    this->screenWidth = screenWidth;
+    this->screenHeight = screenHeight;
+}
+
 //析构函数
 CameraPreviewController::~CameraPreviewController() {
 
