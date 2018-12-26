@@ -66,8 +66,10 @@ JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewM
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewManager_destroyWindowSurface
-  (JNIEnv *env, jobject _jobject){
-
+        (JNIEnv * env, jobject obj) {
+    if(NULL != cameraController) {
+        cameraController->destroyWindowSurface();
+    }
 }
 
 /*
@@ -76,8 +78,12 @@ JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewM
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewManager_destroyEGLContext
-  (JNIEnv *env, jobject _jobject){
-
+        (JNIEnv * env, jobject obj) {
+    if(NULL != cameraController) {
+        cameraController->destroyEGLContext();
+        delete cameraController;
+        cameraController = NULL;
+    }
 }
 
 /*

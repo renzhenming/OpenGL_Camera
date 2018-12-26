@@ -61,6 +61,7 @@ public:
     void processFrame(float position);
     void drawToViewWithAutofit(int videoWidth, int videoHeight, int texWidth, int texHeight);
     void setDegress(int degress, bool isVFlip);
+    void dealloc();
 };
 
 

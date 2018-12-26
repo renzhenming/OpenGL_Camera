@@ -131,3 +131,8 @@ float VideoGLSurfaceRender::calcCropRatio(int screenWidth, int screenHeight, int
 
     return ratio;
 }
+
+void VideoGLSurfaceRender::dealloc(){
+    mInitialized = false;
+    glDeleteProgram(mProgramId);
+}

@@ -18,6 +18,7 @@ public:
     bool makeCurrent(EGLSurface eglSurface);
     bool swapBuffers(EGLSurface eglSurface);
     void release();
+    void releaseSurface(EGLSurface eglSurface);
     virtual ~EGL();
 };
 

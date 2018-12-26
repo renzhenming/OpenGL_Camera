@@ -48,7 +48,7 @@ public:
     void renderToAutoFitTexture(GLuint inputTexId, int width, int height, GLuint outputTexId);
     void renderToViewWithAutofit(GLuint texID, int screenWidth, int screenHeight, int texWidth, int texHeight);
     float calcCropRatio(int screenWidth, int screenHeight, int texWidth, int texHeight);
-
+    void dealloc();
 };
 
 #endif //OPENGLCAMERA_VIDEOGLSURFACERENDER_H

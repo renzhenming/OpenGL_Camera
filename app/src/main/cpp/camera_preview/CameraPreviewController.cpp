@@ -262,6 +262,69 @@ void CameraPreviewController::releaseCamera(){
     }
 }
 
+void CameraPreviewController::destroyEGLContext() {
+    if (handler){
+        handler->postMessage(new Message(MSG_EGL_THREAD_EXIT));
+        handler->postMessage(new Message(MESSAGE_QUEUE_LOOP_QUIT_FLAG));
+    }
+    pthread_join(_threadId, 0);
+    if (queue) {
+        queue->abort();
+        delete queue;
+        queue = NULL;
+    }
+    delete handler;
+    handler = NULL;
+    LOGI("CameraPreviewController destroyEGLContext success");
+}
+
+void CameraPreviewController::destroy() {
+    this->destroyPreviewSurface();
+    if(renderer){
+        renderer->dealloc();
+        delete renderer;
+        renderer = NULL;
+    }
+    this->releaseCamera();
+    egl->release();
+    egl = NULL;
+    this->deleteGlobalRef();
+    LOGI("CameraPreviewController::destroy success");
+}
+
+void CameraPreviewController::destroyPreviewSurface() {
+    if (EGL_NO_SURFACE != previewSurface) {
+        egl->releaseSurface(previewSurface);
+        previewSurface = EGL_NO_SURFACE;
+        if(window){
+            ANativeWindow_release(window);
+            window = NULL;
+        }
+    }
+}
+
+void CameraPreviewController::deleteGlobalRef() {
+    int status = 0;
+    bool needAttach = false;
+    JNIEnv *env;
+    status = jvm->GetEnv((void **) (&env), JNI_VERSION_1_4);
+    if (status < 0) {
+        if (jvm->AttachCurrentThread(&env, NULL) != JNI_OK) {
+            LOGE("CameraPreviewController deleteGlobalRef: AttachCurrentThread() failed");
+            return;
+        }
+        needAttach = true;
+    }
+    if (obj) {
+        env->DeleteGlobalRef(obj);
+    }
+    if (needAttach) {
+        if (jvm->DetachCurrentThread() != JNI_OK) {
+            LOGE("CameraPreviewController deleteGlobalRef DetachCurrentThread() failed");
+            return;
+        }
+    }
+}
 
 //析构函数
 CameraPreviewController::~CameraPreviewController() {

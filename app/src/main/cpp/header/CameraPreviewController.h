@@ -72,18 +72,20 @@ protected:
 	void updateTexImage();
 	void draw();
     void releaseCamera();
+	void deleteGlobalRef();
 public:
     //构造函数
     CameraPreviewController();
     virtual ~CameraPreviewController();
 
-    /** 1:准备EGL Context与EGLThread **/
+    /** 准备EGL Context与EGLThread **/
     void initEGLContext(ANativeWindow* window, JavaVM *jvm, jobject obj, int screenWidth, int screenHeight, int cameraFacingId);
-
-    /** 2:当Camera捕捉到新的一帧图像会调用 **/
+	/** 销毁EGLContext与EGLThread **/
+	virtual void destroyEGLContext();
+    /** 当Camera捕捉到新的一帧图像会调用 **/
     void notifyFrameAvailable();
 
-    /** 4:切换摄像头转向 **/
+    /** 切换摄像头转向 **/
     void switchCameraFacing();
 
     virtual bool initialize();
@@ -91,6 +93,12 @@ public:
     void renderFrame();
 
     void switchCamera();
+	//销毁EGL资源并且调用Andorid销毁Camera
+	virtual void destroy();
+
+	void destroyPreviewSurface();
+
+    void destroyWindowSurface();
 };
 
 enum RenderThreadMessage {
@@ -133,7 +141,7 @@ class CameraPreviewHandler: public Handler {
 				//previewController->destroyPreviewSurface();
 				break;
 			case MSG_EGL_THREAD_EXIT:
-				//previewController->destroy();
+				previewController->destroy();
 				break;
 
 			}

@@ -178,6 +178,41 @@ void CameraPreviewRender::setDegress(int degress, bool isVFlip){
     this->fillTextureCoords();
 }
 
+void CameraPreviewRender::dealloc(){
+    if(mCopier){
+        mCopier->destroy();
+        delete mCopier;
+        mCopier = NULL;
+    }
+    if(mRenderer){
+        LOGI("delete mRenderer..");
+        mRenderer->dealloc();
+        delete mRenderer;
+        mRenderer = NULL;
+    }
+    if (mInputTexId) {
+        LOGI("delete mInputTexId ..");
+        glDeleteTextures(1, &mInputTexId);
+    }
+    if(mOutputTexId){
+        LOGI("delete mOutputTexId ..");
+        glDeleteTextures(1, &mOutputTexId);
+    }
+    if(mPausedTexId){
+        LOGI("delete mPausedTexId..");
+        glDeleteTextures(1, &mPausedTexId);
+    }
+    if(FBO){
+        LOGI("delete FBO..");
+        glDeleteBuffers(1, &FBO);
+    }
+    if(textureCoords){
+        delete[] textureCoords;
+        textureCoords = NULL;
+    }
+    LOGI("CameraPreviewRender::dealloc success");
+}
+
 CameraPreviewRender::~CameraPreviewRender(){
 
 }

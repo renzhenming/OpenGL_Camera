@@ -7,7 +7,14 @@ EGL::EGL(){
 }
 
 void EGL::release(){
-
+    if(EGL_NO_DISPLAY != display && EGL_NO_CONTEXT != context){
+        eglMakeCurrent(display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+        LOGI("after eglMakeCurrent...");
+        eglDestroyContext(display, context);
+        LOGI("after eglDestroyContext...");
+    }
+    display = EGL_NO_DISPLAY;
+    context = EGL_NO_CONTEXT;
 }
 
 bool EGL::init(){
@@ -70,6 +77,11 @@ bool EGL::makeCurrent(EGLSurface eglSurface){
 
 bool EGL::swapBuffers(EGLSurface eglSurface){
     return eglSwapBuffers(display, eglSurface);
+}
+
+void EGL::releaseSurface(EGLSurface eglSurface) {
+    eglDestroySurface(display, eglSurface);
+    eglSurface = EGL_NO_SURFACE;
 }
 
 //析构方法
