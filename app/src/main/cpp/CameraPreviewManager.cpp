@@ -47,7 +47,14 @@ JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewM
  * Signature: (Landroid/view/Surface;)V
  */
 JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewManager_initWindowSurface
-  (JNIEnv *, jobject, jobject);
+        (JNIEnv * env, jobject obj, jobject surface) {
+    if (surface != 0 && NULL != cameraController) {
+        ANativeWindow* window = ANativeWindow_fromSurface(env, surface);
+        if (window != NULL) {
+            cameraController->createWindowSurface(window);
+        }
+    }
+}
 
 /*
  * Class:     com_rzm_opengl_camera_camera_manager_CameraPreviewManager
@@ -61,20 +68,6 @@ JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewM
     }
 }
 
-/*
-* Class:     com_rzm_opengl_camera_camera_manager_CameraPreviewManager
-* Method:    createWindowSurface
-* Signature: (Landroid/view/Surface;)V
-*/
-JNIEXPORT void JNICALL Java_com_rzm_opengl_1camera_camera_manager_CameraPreviewManager_createWindowSurface
-        (JNIEnv * env, jobject obj, jobject surface) {
-    if (surface != 0 && NULL != cameraController) {
-        ANativeWindow* window = ANativeWindow_fromSurface(env, surface);
-        if (window != NULL) {
-            cameraController->createWindowSurface(window);
-        }
-    }
-}
 /*
  * Class:     com_rzm_opengl_camera_camera_manager_CameraPreviewManager
  * Method:    destroyWindowSurface

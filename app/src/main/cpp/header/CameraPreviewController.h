@@ -34,6 +34,7 @@ protected:
 	int cameraWidth;
 	int cameraHeight;
 
+    //自定义的宽高和高度
 	int textureWidth;
 	int textureHeight;
 
