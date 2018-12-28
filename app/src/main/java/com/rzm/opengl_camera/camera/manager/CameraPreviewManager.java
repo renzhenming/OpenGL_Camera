@@ -21,8 +21,6 @@ public class CameraPreviewManager implements CameraSurfaceView.CameraPreviewList
 
 	public native void initEGLContext(Surface surface, int width, int height, int cameraFacingId);
 	public native void initWindowSurface(Surface surface);
-	public native void createWindowSurface(Surface surface);
-	/** 切换摄像头, 底层会在返回来调用configCamera, 之后在启动预览 **/
 	public native void switchCameraFacing();
 	public native void resetRenderSize(int width, int height);
 	public native void destroyWindowSurface();
@@ -42,14 +40,6 @@ public class CameraPreviewManager implements CameraSurfaceView.CameraPreviewList
 		this.mCamera.setCallback(this);
 	}
 	
-	public int getNumberOfCameras() {
-		if (null != mCamera) {
-			return mCamera.getNumberOfCameras();
-		}
-		return -1;
-	}
-
-
 	@Override
 	public void createSurface(Surface surface, int width, int height){
 		startPreview(surface, width, height, defaultCameraFacingId);
