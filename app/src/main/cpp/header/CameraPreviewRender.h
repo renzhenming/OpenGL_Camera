@@ -72,6 +72,14 @@ static GLfloat CAMERA_TRIANGLE_VERTICES[8] = {
         1.0f, 1.0f,	// 3 top right
 };
 
+
+/**
+ * 旋转之后材质坐标如何表示，假设以下边这个未经过旋转的坐标为基准，它的表示顺序是
+ * 左上，右上，左下，右下
+ * 将这个材质旋转（顺时针）90°，注意旋转的是材质，而不是坐标系，此时旋转前的材质
+ * 左上右上左下右下对应的坐标变为（1，1），（1，0），（，0，1），（0，0）
+ * 那么旋转90后的材质坐标就是CAMERA_TEXTURE_ROTATED_90这种，注意左上右上左下右下的顺序不变
+ */
 static GLfloat CAMERA_TEXTURE_NO_ROTATION[8] = {
         0.0f, 1.0f,
         1.0f, 1.0f,
