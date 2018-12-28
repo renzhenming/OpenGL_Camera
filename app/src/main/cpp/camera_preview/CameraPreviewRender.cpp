@@ -135,9 +135,15 @@ void CameraPreviewRender::processFrame(float position){
     // 所有对OpenGL的操作都会针对这个帧缓存对象执行
     glBindFramebuffer(GL_FRAMEBUFFER,FBO);
     checkGlError("glBindFramebuffer FBO");
+
+    //degress = 90说明是竖屏后置摄像头
+    //degress = 270说明是竖屏前置摄像头
+    //cameraHeight和cameraWidth是获取到的手机支持的预览宽高，且宽>高
     if(degress == 90 || degress == 270){
+        //所以竖屏状态下，设置cameraHeight为预览界面的宽
         glViewport(0,0,cameraHeight,cameraWidth);
     }else{
+        //横屏
         glViewport(0,0,cameraWidth,cameraHeight);
     }
     GLfloat* vertexCoords = this->getVertexCoords();

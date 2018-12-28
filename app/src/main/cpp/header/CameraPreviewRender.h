@@ -66,10 +66,10 @@ public:
 
 
 static GLfloat CAMERA_TRIANGLE_VERTICES[8] = {
-        -1.0f, -1.0f,	// 0 top left
-        1.0f, -1.0f,	// 1 bottom left
-        -1.0f, 1.0f,  // 2 bottom right
-        1.0f, 1.0f,	// 3 top right
+        -1.0f, -1.0f,	// 0 左下
+        1.0f, -1.0f,	// 1 右下
+        -1.0f, 1.0f,  // 2 左上
+        1.0f, 1.0f,	// 3 右上
 };
 
 static GLfloat CAMERA_TEXTURE_NO_ROTATION[8] = {
@@ -80,10 +80,10 @@ static GLfloat CAMERA_TEXTURE_NO_ROTATION[8] = {
 };
 
 static GLfloat CAMERA_TEXTURE_ROTATED_90[8] = {
-        1.0f, 1.0f,
-        1.0f, 0.0f,
-        0.0f, 1.0f,
-        0.0f, 0.0f
+        1.0f, 1.0f,  //右上
+        1.0f, 0.0f,  //右下
+        0.0f, 1.0f,  //左上
+        0.0f, 0.0f   //左下
 };
 
 static GLfloat CAMERA_TEXTURE_ROTATED_180[8] = {
@@ -94,10 +94,10 @@ static GLfloat CAMERA_TEXTURE_ROTATED_180[8] = {
 };
 
 static GLfloat CAMERA_TEXTURE_ROTATED_270[8] = {
-        0.0f, 0.0f,
-        0.0f, 1.0f,
-        1.0f, 0.0f,
-        1.0f, 1.0f
+        0.0f, 0.0f, //左下
+        0.0f, 1.0f, //右下
+        1.0f, 0.0f, //左上
+        1.0f, 1.0f  //右上
 };
 
 #endif //rzm_opengl_camera_manager_camera_preview_CameraPreviewRender
