@@ -49,7 +49,7 @@ void GPUTextureFrameCopier::renderWithCoords(TextureFrame *textureFrame, GLuint 
     //创建一个帧缓冲的纹理和创建普通纹理差不多
     glBindTexture(GL_TEXTURE_2D, texId);
     checkGlError("GPUTextureFrameCopier glBindTexture");
-    //把纹理texId附加到帧缓冲上
+    //把纹理texId附加到帧缓冲上 帧缓冲区数据渲染到纹理上
     //参数解析：target：创建的帧缓冲类型的目标（绘制、读取或两者都有，GL_READ_FRAMEBUFFER GL_DRAW_FRAMEBUFFER GL_FRAME_BUFFER）
     //        attachment：附加的附件的类型。现在附加的是一个颜色附件。需要注意，最后的那个0是暗示可以附加1个以上颜色的附件
     //                    (GL_DEPTH_ATTACHMENT GL_STENCIL_ATTACHMENT GL_DEPTH_STENCIL_ATTACHMENT)
@@ -71,6 +71,8 @@ void GPUTextureFrameCopier::renderWithCoords(TextureFrame *textureFrame, GLuint 
 
     float texTransMatrix[4 * 4];
     matrixSetIdentityM(texTransMatrix);
+
+    //设置Shader内Uniform变量的值
     glUniformMatrix4fv(mUniformTexMatrix, 1, GL_FALSE, (GLfloat *) texTransMatrix);
 
     float rotateMatrix[4 * 4];

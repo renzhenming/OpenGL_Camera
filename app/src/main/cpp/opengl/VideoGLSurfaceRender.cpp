@@ -105,6 +105,8 @@ void VideoGLSurfaceRender::renderToViewWithAutofit(GLuint texID, int screenWidth
     glUseProgram(mProgramId);
     static const GLfloat _vertices[] = { -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f,
                                          1.0f, 1.0f };
+
+    //设置Shader数据 顶点数据源
     glVertexAttribPointer(mVertexCoords, 2, GL_FLOAT, 0, 0, _vertices);
     glEnableVertexAttribArray(mVertexCoords);
     static const GLfloat texCoords[] = { 0.0f, cropRatio, 1.0f, cropRatio, 0.0f, 1.0f-cropRatio,

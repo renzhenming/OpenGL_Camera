@@ -55,6 +55,7 @@ int GPUTextureFrame::initTexture(){
 }
 
 bool GPUTextureFrame::bindTexture(GLint* uniformSamplers) {
+    //关联纹理层(GL_TEXTURE0 ~ GL_TEXTURE31)
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_EXTERNAL_OES,mTextureId);
     glUniform1i(*uniformSamplers,0);
