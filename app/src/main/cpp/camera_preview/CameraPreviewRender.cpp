@@ -43,7 +43,7 @@ void CameraPreviewRender::init(int degress, bool isVFlip, int textureWidth, int 
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
     GLint format = GL_RGBA;
-    //这个纹理，只分配内存，而不去填充它。纹理填充会在渲染到帧缓冲的时候去做
+    //这个纹理，只分配内存，而不去填充它。纹理填充会在渲染到帧缓冲的时候去做(末尾的NULL表示我们只预分配空间，而不实际加载纹理)
     glTexImage2D(GL_TEXTURE_2D,0,format,(GLsizei)textureWidth,(GLsizei)textureHeight,0,format,GL_UNSIGNED_BYTE,0);
     //相当于解绑,恢复OpenGL默认状态的代码,这样下边的操作就不再针对这个texture，所以创建一个新的texture之前，我们做一步
     //恢复状态的操作，OpenGL是状态机，当使用glBindTexture绑定一张纹理后，如果不再绑定新的纹理，则OpenGL之后的操作都会对应此纹理
@@ -59,7 +59,16 @@ void CameraPreviewRender::init(int degress, bool isVFlip, int textureWidth, int 
     glTexImage2D(GL_TEXTURE_2D,0,format,(GLsizei)textureWidth,(GLsizei)textureHeight,0,format,GL_UNSIGNED_BYTE,0);
     glBindTexture(GL_TEXTURE_2D,0);
 
-    //创建一个缓存对象
+    //创建一个帧缓冲对象,如果不显示的创建帧缓冲对象，那么其实我们是在系统默认的帧缓冲对象中操作的
+    //帧缓冲包括OpenGL使用的颜色缓冲区(color buffer)、深度缓冲区(depth buffer)、模板缓冲区(stencil buffer)等缓冲区
+    //默认的帧缓冲区由窗口系统创建,就是目前我们一直使用的绘图命令的作用对象，称之为窗口系统提供的帧缓冲区(window-system-provided framebuffer)
+    //OpenGL也允许我们手动创建一个帧缓冲区，并将渲染结果重定向到这个缓冲区。在创建时允许我们自定义帧缓冲区的一些特性，
+    // 这个自定义的帧缓冲区，称之为应用程序帧缓冲区(application-created framebuffer object ),使用自定义的帧缓冲区，
+    // 可以实现镜面，离屏渲染，以及很酷的后处理效果，同默认的帧缓冲区一样，自定义的帧缓冲区也包含颜色缓冲区、深度和模板缓冲区
+    //FBO中包含两种类型的附加图像(framebuffer-attachable): 纹理图像和RenderBuffer图像(texture images and renderbuffer images)。
+    // 附加纹理时OpenGL渲染到这个纹理图像，在着色器中可以访问到这个纹理对象；附加RenderBuffer时，OpenGL执行离屏渲染(offscreen rendering)。
+    //FBO可以附加多个缓冲区，而且可以灵活地在缓冲区中切换
+
     glGenFramebuffers(1,&FBO);
     checkGlError("glGenFramebuffers");
 
@@ -87,6 +96,12 @@ void CameraPreviewRender::init(int degress, bool isVFlip, int textureWidth, int 
         //纹理图像使用glteximage2d定义,函数指定二维纹理图像
         glTexImage2D(GL_TEXTURE_2D,0,format,cameraHeight,cameraWidth,0,format,GL_UNSIGNED_BYTE,0);
     }else{
+        //函数中后面三个参数format、type、data表示的是内存中图像像素的信息，包括格式，类型和指向内存的指针。
+        // 而internalFormat表示的是OpenGL内存存储纹理的格式，表示的是纹理中颜色成分的格式
+        //上面填写的纹理格式GL_RGBA，以及GL_UNSIGNED_BYTE表示纹理包含红绿蓝和透明值，并且每个成分用无符号字节表示。
+        // cameraWidth,cameraHeight表示我们分配的纹理大小，注意这个纹理需要和我们渲染的屏幕大小保持一致，
+        // 如果需要绘制与屏幕不一致的纹理，使用glViewport函数进行调节。可以看后边，的确调节了
+        // （processFrame方法中）
         glTexImage2D(GL_TEXTURE_2D,0,format,cameraWidth,cameraHeight,0,format,GL_UNSIGNED_BYTE,0);
     }
     glBindTexture(GL_TEXTURE_2D,0);

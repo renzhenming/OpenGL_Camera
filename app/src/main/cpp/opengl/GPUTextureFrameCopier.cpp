@@ -41,6 +41,7 @@ bool GPUTextureFrameCopier::init() {
     return true;
 }
 
+//texId是rotatedTextureId
 void GPUTextureFrameCopier::renderWithCoords(TextureFrame *textureFrame, GLuint texId,
                                              GLfloat *vertexCoords,
                                              GLfloat *textureCoords) {
@@ -56,6 +57,11 @@ void GPUTextureFrameCopier::renderWithCoords(TextureFrame *textureFrame, GLuint 
     //        textarget：附加的纹理类型。
     //        texture：附加的实际纹理。
     //        level：Mipmap level。设置为0。
+    //附加到了颜色附加点GL_COLOR_ATTACHMENT0,在绘制时，如果需要开启深度测试还需要附加一个深度缓冲区
+    //可以再创建一个深度texture，然后再次附加
+    //glGenTexture(..deptchTexId)
+    //glBindTexture(GL_TEXTURE_2D, deptchTexId);
+    //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT,GL_TEXTURE_2D, deptchTexId, 0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId, 0);
     checkGlError("glFramebufferTexture2D");
     glUseProgram(mProgramId);
