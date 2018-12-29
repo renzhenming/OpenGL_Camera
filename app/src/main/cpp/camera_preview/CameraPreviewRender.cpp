@@ -62,16 +62,28 @@ void CameraPreviewRender::init(int degress, bool isVFlip, int textureWidth, int 
     glGenFramebuffers(1,&FBO);
     checkGlError("glGenFramebuffers");
 
+    //生成的纹理是无维度的；第一次绑定至的纹理目标的维度为自己的维度
     glGenTextures(1,&mRotateTexId);
     checkGlError("glGenTextures mRotateTexId");
+    //指定纹理要绑定到的目标，必须是GL_TEXTURE_2D或者GL_TEXTURE_CUBE_MAP。
+    //所以这里是二维纹理,将纹理名绑定至当前活动纹理单元目标。当一个纹理与目标绑定时，该目标之前的绑定关系将自动被打破
     glBindTexture(GL_TEXTURE_2D,mRotateTexId);
     checkGlError("glBindTexture mRotateTexId");
+    //The target texture, which must be either GL_TEXTURE_1D or GL_TEXTURE_2D.
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
 
     if(degress == 90 || degress == 270){
+        //参数
+        //   target：The target texture. Must be GL_TEXTURE_2D.
+        //   level: The level-of-detail number. Level 0 is the base image level. Level n is the n th mipmap reduction image.
+        //   internalformat: The number of color components in the texture
+        //   border:The width of the border. Must be either 0 or 1.
+        //   type:The data type of the pixel data. The following symbolic values are accepted: GL_UNSIGNED_BYTE,
+        //        GL_BYTE, GL_BITMAP, GL_UNSIGNED_SHORT, GL_SHORT, GL_UNSIGNED_INT, GL_INT, and GL_FLOAT.
+        //纹理图像使用glteximage2d定义,函数指定二维纹理图像
         glTexImage2D(GL_TEXTURE_2D,0,format,cameraHeight,cameraWidth,0,format,GL_UNSIGNED_BYTE,0);
     }else{
         glTexImage2D(GL_TEXTURE_2D,0,format,cameraWidth,cameraHeight,0,format,GL_UNSIGNED_BYTE,0);
@@ -139,6 +151,9 @@ void CameraPreviewRender::processFrame(float position){
     //degress = 90说明是竖屏后置摄像头
     //degress = 270说明是竖屏前置摄像头
     //cameraHeight和cameraWidth是获取到的手机支持的预览宽高，且宽>高
+
+    //如果你想将你的屏幕渲染到一个更小或更大的纹理上，你需要（在渲染到你的帧缓冲之前）
+    // 再次调用glViewport，使用纹理的新维度作为参数，否则只有一小部分的纹理或屏幕会被渲染到这个纹理上。
     if(degress == 90 || degress == 270){
         //所以竖屏状态下，设置cameraHeight为预览界面的宽
         glViewport(0,0,cameraHeight,cameraWidth);
