@@ -45,7 +45,8 @@ void CameraPreviewRender::init(int degress, bool isVFlip, int textureWidth, int 
     GLint format = GL_RGBA;
     //这个纹理，只分配内存，而不去填充它。纹理填充会在渲染到帧缓冲的时候去做
     glTexImage2D(GL_TEXTURE_2D,0,format,(GLsizei)textureWidth,(GLsizei)textureHeight,0,format,GL_UNSIGNED_BYTE,0);
-    //相当于解绑
+    //相当于解绑,恢复OpenGL默认状态的代码,这样下边的操作就不再针对这个texture，所以创建一个新的texture之前，我们做一步
+    //恢复状态的操作，OpenGL是状态机，当使用glBindTexture绑定一张纹理后，如果不再绑定新的纹理，则OpenGL之后的操作都会对应此纹理
     glBindTexture(GL_TEXTURE_2D,0);
 
     glGenTextures(1,&mOutputTexId);
@@ -145,6 +146,8 @@ void CameraPreviewRender::processFrame(float position){
     LOGI("CameraPreviewRender::processFrame start");
     //绑定创建的缓存对象FBO（FrameBufferObject），绑定一个帧缓存对象后，
     // 所有对OpenGL的操作都会针对这个帧缓存对象执行
+    // When a framebuffer object is bound, the previous binding
+    // is automatically broken.
     glBindFramebuffer(GL_FRAMEBUFFER,FBO);
     checkGlError("glBindFramebuffer FBO");
 
@@ -172,7 +175,8 @@ void CameraPreviewRender::processFrame(float position){
         rotateHeight = cameraWidth;
     }
     mRenderer->renderToAutoFitTexture(mRotateTexId,rotateWidth,rotateHeight,mInputTexId);
-    //为了让所有的渲染操作对主窗口产生影响我们必须通过绑定为0来使默认帧缓冲被激活
+    //值零保留，缓冲区设置为零有效地解除绑定先前绑定的
+    // 任何缓冲区对象，并恢复该缓冲区对象目标的客户端内存使用（如果该目标支持的话）
     glBindFramebuffer(GL_FRAMEBUFFER,0);
     LOGI("CameraPreviewRender::processFrame success");
 }
